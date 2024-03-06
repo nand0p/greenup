@@ -23,11 +23,6 @@ resource "aws_s3_bucket_acl" "greenup" {
 }
 
 
-data "aws_route53_zone" "hex7" {
-  name = "hex7.com."
-}
-
-
 resource "aws_s3_bucket_website_configuration" "greenup" {
   bucket = aws_s3_bucket.greenup.id
   index_document { suffix = "index.html" }
@@ -62,16 +57,3 @@ resource "aws_s3_bucket_ownership_controls" "greenup" {
     object_ownership = "BucketOwnerPreferred"
   }
 }
-
-
-#resource "aws_route53_record" "greenup" {
-#  depends_on = [ aws_s3_bucket.greenup ]
-#  zone_id = data.aws_route53_zone.hex7.zone_id
-#  name    = "${var.bucket}."
-#  type    = "A"
-#  alias {
-#    name                   = aws_s3_bucket_website_configuration.greenup.website_domain
-#    zone_id                = aws_s3_bucket.greenup.hosted_zone_id
-#    evaluate_target_health = true
-#  }
-#}

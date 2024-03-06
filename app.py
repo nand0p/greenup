@@ -7,7 +7,6 @@ import os
 
 app = Flask(__name__)
 
-
 def get_rev() -> str:
     return subprocess.check_output(['git', 'rev-parse', 'HEAD']).decode('ascii').strip()
 
@@ -15,7 +14,8 @@ def get_rev() -> str:
 class GreenUp(FlaskView):
   def __init__(self):
     self.debug = True
-
+    self.title_width = 150
+    self.image_width = 250
 
   @route('/', methods = ['GET'])
   def index(self):
@@ -26,13 +26,13 @@ class GreenUp(FlaskView):
                              debug=self.debug,
                              rev=get_rev(),
                              date=datetime.now(),
-                             loop=([1] * 10))
-
+                             image_width=self.image_width,
+                             title_width=self.title_width,
+                             loop=([1] * 11))
 
   @route('/test')
   def test(self):
     return 'success'
-
 
   @route('/robots.txt')
   def robots(self):

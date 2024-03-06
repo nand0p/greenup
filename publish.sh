@@ -18,21 +18,17 @@ wget --recursive \
      localhost:${PORT}
 
 
-echo "S3 Bucket: ${S3_BUCKET}"
-aws s3 mb s3://${S3_BUCKET} || true
-aws s3 ls s3://${S3_BUCKET}
-
-echo "s3 make static path"
-aws s3 mb s3://${S3_BUCKET}/static
-aws s3api put-object-acl --bucket ${S3_BUCKET} --key static/
-
 echo "publish greenup s3://${S3_BUCKET}"
 aws s3 cp greenup/index.html s3://${S3_BUCKET}/index.html
-aws s3 cp static/greenup.png s3://${S3_BUCKET}/static/greenup.png
-aws s3 cp static/robots.txt s3://${S3_BUCKET}/static/robots.txt
-aws s3 cp static/favicon.ico s3://${S3_BUCKET}/static/favicon.ico
+aws s3 sync static s3://${S3_BUCKET}/static
 
-echo "put object acl"
-aws s3api put-object-acl --bucket ${S3_BUCKET} --key index.html --acl public-read
-aws s3api put-object-acl --bucket ${S3_BUCKET} --key robots.txt --acl public-read
-aws s3api put-object-acl --bucket ${S3_BUCKET} --key favicon.ico --acl public-read
+#echo "put object acl"
+#aws s3api put-object-acl --bucket ${S3_BUCKET} --key index.html --acl public-read
+#aws s3api put-object-acl --bucket ${S3_BUCKET} --key static/robots.txt --acl public-read
+#aws s3api put-object-acl --bucket ${S3_BUCKET} --key static/favicon.ico --acl public-read
+#aws s3api put-object-acl --bucket ${S3_BUCKET} --key static/greenup.png --acl public-read
+
+echo "list s3 bucket"
+aws s3 ls s3://${S3_BUCKET}
+aws s3 ls s3://${S3_BUCKET}/static/
+
